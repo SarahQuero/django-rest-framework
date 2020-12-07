@@ -16,6 +16,3 @@ class employeeList(APIView):
         employees1 = employees.objects.all()
         serializer = employeesSerializer(employees1, many= True)
         return Response(serializer.data)
-
-    def post(self):
-        pass

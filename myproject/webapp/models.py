@@ -1,12 +1,17 @@
 from django.db import models
 
+from rest_framework.response import Response
+from . serializers import employeesSerializer
+
 # Create your models here.
 class employees(models.Model):
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=10)
-    user_email  = models.EmailField(max_length=70,blank=True,unique=True)
-    postal_address = models.TextField()
-    emp_id = models.IntegerField()
+    id = models.AutoField(primary_key=True)
+    firstname = models.CharField(max_length=255)
+    lastname = models.CharField(max_length=255)
+    user_email  = models.EmailField(max_length=255,unique=True)
+    postal_address = models.CharField(max_length=255)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.firstname
+    
