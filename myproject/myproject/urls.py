@@ -21,5 +21,7 @@ from webapp import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^employees/', views.employeeList.as_view()),
+    url(r'^employee/add/', views.employee),
+    url(r'^employee/update/(?P<pk>\d+)/$', views.employee_update),
 
 ]
