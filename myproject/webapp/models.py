@@ -9,7 +9,7 @@ class employees(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     user_email  = models.EmailField(max_length=255,unique=True, blank=True)
-    postal_address = models.CharField(max_length=255, null=True )
+    postal_address = models.CharField(max_length=255, null=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):

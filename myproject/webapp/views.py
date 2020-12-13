@@ -13,33 +13,83 @@ from rest_framework.decorators import api_view
 
 class employeeList(APIView):
 
-    def get(self, request):
-        employees1 = employees.objects.all()
+    @staticmethod
+    def getEmployee(active):
+        employees1 = employees.objects.exclude(active=active)
         serializer = employeesSerializer(employees1, many= True)
         return Response(serializer.data)
 
-@api_view(['POST'])
-def employee(request):
-    serializer = employeesSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request):
+        return employeeList.getEmployee(False)
+    
+    def post(self, request):
+        serializer = employeesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class employeeDeleteList(APIView):
 
-@api_view(['PUT'])
-def employee_update(request, pk):
-    print ("ici")
+    def get(self, request):
+        return employeeList.getEmployee(True)
+
+class employeeDetail(APIView):
     """
-    Update a code employee.
+    Retrieve, update or delete a snippet instance.
     """
-    try:
-        employee = employees.objects.get(id=pk)
-    except employees.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    def get_object(self, pk):
+        try:
+            return employees.objects.get(pk=pk)
+        except employees.DoesNotExist:
+            raise Http404
 
-    serializer = SnippetSerializer(snippet, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    def get(self, request, pk, format=None):
+        employee = self.get_object(pk)
+        serializer = employeesSerializer(employee)
         return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        employee = self.get_object(pk)
+        serializer = employeesSerializer(employee, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        print('Hello')
+        employee = self.get_object(pk)
+        # Modify the active field to turn it to false value
+        employee.active = False
+        # Save the modification 
+        employee.save()
+        # employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# @api_view(['POST'])
+# def employee(request):
+#     serializer = employeesSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['PUT'])
+# def employee_update(request, pk):
+#     print ("ici")
+#     """
+#     Update a code employee.
+#     """
+#     try:
+#         employee = employees.objects.get(id=pk)
+#     except employees.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     serializer = SnippetSerializer(snippet, data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -14,14 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from webapp import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^employees/', views.employeeList.as_view()),
-    url(r'^employee/add/', views.employee),
-    url(r'^employee/update/(?P<pk>\d+)/$', views.employee_update),
-
+    path('employees/', views.employeeList.as_view()),
+    path('employees/deleteHCP/', views.employeeDeleteList.as_view()),
+    path('employees/<int:pk>/', views.employeeDetail.as_view()),
+    # url(r'^admin/', admin.site.urls),
+    # url(r'^employees/', views.employeeList.as_view()),
+    # url(r'^employee/add/', views.employee),
+    # url(r'^employee/update/(?P<pk>\d+)/$', views.employee_update),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
