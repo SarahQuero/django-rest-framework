@@ -22,10 +22,6 @@ urlpatterns = [
     path('employees/', views.employeeList.as_view()),
     path('employees/deleteHCP/', views.employeeDeleteList.as_view()),
     path('employees/<int:pk>/', views.employeeDetail.as_view()),
-    # url(r'^admin/', admin.site.urls),
-    # url(r'^employees/', views.employeeList.as_view()),
-    # url(r'^employee/add/', views.employee),
-    # url(r'^employee/update/(?P<pk>\d+)/$', views.employee_update),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
