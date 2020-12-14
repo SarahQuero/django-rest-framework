@@ -58,11 +58,10 @@ class employeeDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        print('Hello')
         employee = self.get_object(pk)
-        # Modify the active field to turn it to false value
+        # # Modify the active field to turn it to false value
         employee.active = False
-        # Save the modification 
+        # # Save the modification 
         employee.save()
         # employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
